@@ -13,30 +13,7 @@ This project is a lossless compression program which uses the DEFLATE compressio
 
 ---
 
-## Architecture & Data Flow
-
-```text
-                     [ Input File ]
-                           │
-              (Split into 128 KB Blocks)
-                           │
-       ┌───────────────────┼───────────────────┐
-       ▼                   ▼                   ▼
-   [Block 1]           [Block 2]           [Block 3]    ... (Rayon Thread Pool)
-   ┌───┴───┐           ┌───┴───┐           ┌───┴───┐
-   │ LZ77  │           │ LZ77  │           │ LZ77  │    (SWAR SIMD Matching)
-   │Huffman│           │Huffman│           │Huffman│    (Dynamic Tree Serialization)
-   └───┬───┘           └───┬───┘           └───┬───┘
-       └───────────────────┼───────────────────┘
-                           ▼
-                  [ Ordered Assembly ] ──> Generates Block Index
-                           │
-                     [ .truv File ]
-```
-
----
-
-## The `.truv` Binary Layout
+## The `.truv` Format
 
 A compressed `.truv` file is packed as follows:
 
