@@ -2,9 +2,7 @@
 
 This project is a lossless compression program which uses the DEFLATE compression algorithm. By decoupling sliding-window match-reduction (LZ77) from statistical entropy coding (Dynamic Huffman), the program achieves significant compression ratios while maximizing throughput through data parallelism and hardware-level bit manipulation.
 
----
-
-## Key Features
+## Features
 
 *   **Two-Pass Architecture:** Decouples pattern-matching (LZ77) from bit-packing (Dynamic Huffman).
 *   **Block-Parallel Concurrency:** Splits input files into independent 128 KB blocks and processes them concurrently across CPU cores using a work-stealing thread pool (`rayon`).
