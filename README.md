@@ -1,6 +1,6 @@
 # truv_compression
 
-This project is a lossless compression program which uses the DEFLATE compression algorithm. By decoupling sliding-window match-reduction (LZ77) from statistical entropy coding (Dynamic Huffman), the program achieves significant compression ratios while maximizing throughput through data parallelism and hardware-level bit manipulation.
+This project is a lossless compression program which uses a DEFLATE-inspired compression algorithm. By decoupling sliding-window match-reduction (LZ77) from statistical entropy coding (Dynamic Huffman), the program achieves significant compression ratios while maximizing throughput through data parallelism and hardware-level bit manipulation.
 
 ## Features
 
