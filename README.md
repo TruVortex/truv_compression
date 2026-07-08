@@ -1,24 +1,24 @@
 # truv_compression
 
-This project is a lossless compression program which uses a DEFLATE-inspired compression algorithm. By decoupling sliding-window match-reduction (LZ77) from statistical entropy coding (Dynamic Huffman), the program achieves significant compression ratios while maximizing throughput through data parallelism and hardware-level bit manipulation.
+This project is a lossless compression program which uses a DEFLATE-inspired compression algorithm. By first sliding-window match-reduction (LZ77) then statistical entropy coding (Adaptive Huffman), the program achieves significant compression ratios while still maximizing throughput through data parallelism and hardware-level bit manipulation.
 
 ## Features
 
-*   **Two-Pass Architecture:** Decouples pattern-matching (LZ77) from bit-packing (Dynamic Huffman).
+*   **Two-Pass Architecture:** Decouples LZ77 from Adaptive Huffman.
 *   **Block-Parallel Concurrency:** Splits input files into independent 128 KB blocks and processes them concurrently across CPU cores using a work-stealing thread pool (`rayon`).
-*   **SWAR SIMD Matching:** Replaces slow byte-by-byte string comparisons with 64-bit word comparisons. It resolves exact mismatch locations using bitwise XOR and hardware-level trailing-zero calculations.
-*   **Data Integrity:** Includes pre-order tree serialization, strict bounds audits to prevent relative match-offset exploits, and a localized CRC32 checksum verification.
+*   **SWAR SIMD Matching:** Replaces slow byte-by-byte string comparisons with 64-bit word comparisons; resolves  mismatch locations using bitwise XOR and trailing-zero calculations.
+*   **Data Integrity:** Includes pre-order tree serialization, strict bounds audits to prevent relative match-offset exploits, and a CRC32 checksum verification.
 
 ---
 
-## The `.truv` Format
+## File Format
 
 A compressed `.truv` file is packed as follows:
 
 ```text
-+-------------------+-----------------+----------------------+
-| Global File Header| Block Metadata  | Block Data Payloads  |
-+-------------------+-----------------+----------------------+
++--------------------+----------------+------------+
+| Global File Header | Block Metadata | Block Data |
++--------------------+----------------+------------+
 ```
 
 ### 1. Global File Header (18 bytes)
@@ -42,7 +42,7 @@ Each compressed block is independent and self-contained:
 
 ## Performance & Microbenchmarks
 
-Testing on a highly repetitive ~270 KB text dataset yielded the following execution times:
+Testing on a repetitive ~270 KB text dataset yielded the following execution times:
 
 | Phase | Architecture | Match Search Loop | Compression Time | Relative Latency |
 | :--- | :--- | :--- | :--- | :--- |
@@ -79,4 +79,4 @@ Run microbenchmarks locally using Criterion:
 ```bash
 cargo bench
 ```
-Open `target/criterion/report/index.html` in your browser to view the detailed performance and statistical variance reports.
+Open `target/criterion/report/index.html` in your browser to view the performance and statistical variance reports.
