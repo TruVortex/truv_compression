@@ -1,10 +1,10 @@
 # truv_compression
 
-This project is a lossless compression program which uses a DEFLATE-inspired compression algorithm. By first sliding-window match-reduction (LZ77) then statistical entropy coding (Adaptive Huffman), the program achieves significant compression ratios while still maximizing throughput through data parallelism and hardware-level bit manipulation.
+This project is a lossless compression program which uses a DEFLATE-inspired compression algorithm. By first sliding-window match-reduction (LZ77) then statistical entropy coding (Dynamic Huffman), the program achieves significant compression ratios while still maximizing throughput through data parallelism and hardware-level bit manipulation.
 
 ## Features
 
-*   **Two-Pass Architecture:** Decouples LZ77 from Adaptive Huffman.
+*   **Two-Pass Architecture:** Decouples LZ77 from Dynamic Huffman.
 *   **Block-Parallel Concurrency:** Splits input files into independent 128 KB blocks and processes them concurrently across CPU cores using a work-stealing thread pool (`rayon`).
 *   **SWAR SIMD Matching:** Replaces slow byte-by-byte string comparisons with 64-bit word comparisons; resolves  mismatch locations using bitwise XOR and trailing-zero calculations.
 *   **Data Integrity:** Includes pre-order tree serialization, strict bounds audits to prevent relative match-offset exploits, and a CRC32 checksum verification.
