@@ -21,17 +21,17 @@ A compressed `.truv` file is packed as follows:
 +--------------------+----------------+------------+
 ```
 
-### 1. Global File Header (18 bytes)
+### 1. Global File Header
 *   **Magic Bytes (4 bytes):** `TRUV` (ASCII representation)
 *   **Version (2 bytes):** `u16` format version
 *   **Original File Size (8 bytes):** `u64` uncompressed file byte size
 *   **CRC32 Checksum (4 bytes):** `u32` hash of the uncompressed data
 
-### 2. Block Metadata Index
+### 2. Block Metadata
 *   **Number of Blocks (4 bytes):** `u32` count of total compressed blocks
 *   **Block Index Table (`N * 4` bytes):** An array of `u32` values, where each element represents the exact byte size of a compressed block payload.
 
-### 3. Block Data Payloads
+### 3. Block Data
 Each compressed block is independent and self-contained:
 *   **Uncompressed Block Size (4 bytes):** `u32` original size
 *   **LZ77 Stream Size (4 bytes):** `u32` size of the intermediate stream
